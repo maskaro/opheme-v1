@@ -1,0 +1,124 @@
+mysql
+root:opheme135!
+
+gitlab
+admin@local.host:opheme135!
+
+mongodb
+/var/lib/mongodb
+/etc/php5/apache2/php.ini | /etc/php5/cli/php.ini -> extension=mongo.so
+
+crontab -e
+*/1 * * * * cd /opt/ci.opheme && git pull && chown -R www-data: /opt/ci.opheme/ && cd /opt/ci.opheme/loose-cannon/bin/ && chown root: * && chmod +x * && cd /opt/live.opheme/loose-cannon/bin/ && chown root: * && chmod +x * &> /dev/null
+*/1 * * * * cp -r /opt/ci.opheme/oPheme_Website/* /opt/live.opheme/oPheme_Website/ && chown -R www-data: /opt/live.opheme/oPheme_Website/* &> /dev/null
+*/1 * * * * top -b -n 1 > /opt/opheme_system_logs/overall.log && cat /opt/opheme_system_logs/overall.log | grep load | grep average | echo `date +%s` `awk '{ for (i=(NF-2); i<=NF; i++) print $i }'` | tr ',' ' ' >> /opt/opheme_system_logs/load.log && cat /opt/opheme_system_logs/overall.log | grep KiB | grep Mem | echo `date +%s` `awk '{ print $3, $5, $7 }'` >> /opt/opheme_system_logs/memory.log
+0,15,30,45 * * * * /opt/ci.opheme/devops/loose-cannon-helper-ci.sh &> /dev/null
+0,15,30,45 * * * * /opt/live.opheme/devops/loose-cannon-helper.sh &> /dev/null
+
+#!/bin/bash
+
+top -b -n 1 > /opt/opheme_system_logs/overall.log && \
+cat /opt/opheme_system_logs/overall.log | grep load | grep average | echo `date +%s` `awk '{ for (i=(NF-2); i<=NF; i++) print $i }'` | tr ',' ' ' >> /opt/opheme_system_logs/load.log
+cat /opt/opheme_system_logs/overall.log | grep KiB | grep Mem | echo `date +%s` `awk '{ print $3, $5, $7 }'` >> /opt/opheme_system_logs/memory.log
+
+
+
+# Privileges for `debian-sys-maint`@`localhost`
+
+GRANT ALL PRIVILEGES ON *.* TO 'debian-sys-maint'@'localhost' IDENTIFIED BY PASSWORD '*E264368B5A31E6EF99AD4E4EEC42C3C1B1596D10' WITH GRANT OPTION;
+
+
+# Privileges for `genie`@`localhost`
+
+GRANT USAGE ON *.* TO 'genie'@'localhost' IDENTIFIED BY PASSWORD '*3DD0A168F6B9C644C345B9A1208470B2D83DBA67';
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON `buggenie`.* TO 'genie'@'localhost';
+
+
+# Privileges for `git`@`localhost`
+
+GRANT USAGE ON *.* TO 'git'@'localhost' IDENTIFIED BY PASSWORD '*BCA69371F5652BA85FA80A3AEEA71FE5A88E331B';
+
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, LOCK TABLES ON `gitlabhq_production`.* TO 'git'@'localhost';
+
+
+# Privileges for `mailuser`@`localhost`
+
+GRANT USAGE ON *.* TO 'mailuser'@'localhost' IDENTIFIED BY PASSWORD '*BCA69371F5652BA85FA80A3AEEA71FE5A88E331B';
+
+GRANT SELECT ON `mailserver`.* TO 'mailuser'@'localhost';
+
+
+# Privileges for `oph_subs`@`localhost`
+
+GRANT USAGE ON *.* TO 'oph_subs'@'localhost' IDENTIFIED BY PASSWORD '*D56533CA1435D6D096DE8A5CCDCCEDA83060B5D0';
+
+GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, CREATE TEMPORARY TABLES, EXECUTE, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, EVENT, TRIGGER ON `opheme\_subscriptions`.* TO 'oph_subs'@'localhost';
+
+GRANT SELECT ON `secure\_login`.* TO 'oph_subs'@'localhost';
+
+
+# Privileges for `opheme`@`localhost`
+
+GRANT USAGE ON *.* TO 'opheme'@'localhost' IDENTIFIED BY PASSWORD '*34DE8C205661DF36E45B893A024C542161F88376';
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON `opheme\_form\_submits`.* TO 'opheme'@'localhost';
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON `opheme`.* TO 'opheme'@'localhost';
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON `opheme\_twitter\_follows`.* TO 'opheme'@'localhost';
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON `secure_login`.* TO 'opheme'@'localhost';
+
+GRANT SELECT, INSERT ON `opheme_logs`.* TO 'opheme'@'localhost';
+
+
+# Privileges for `phpmyadmin`@`localhost`
+
+GRANT USAGE ON *.* TO 'phpmyadmin'@'localhost' IDENTIFIED BY PASSWORD '*307A4C65727D9C8E666C12361EB011F86F853732';
+
+GRANT ALL PRIVILEGES ON `phpmyadmin`.* TO 'phpmyadmin'@'localhost';
+
+
+# Privileges for `pma`@`localhost`
+
+GRANT USAGE ON *.* TO 'pma'@'localhost';
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON `phpmyadmin`.* TO 'pma'@'localhost';
+
+
+# Privileges for `root`@`127.0.0.1`
+
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'127.0.0.1' IDENTIFIED BY PASSWORD '*307A4C65727D9C8E666C12361EB011F86F853732' WITH GRANT OPTION;
+
+
+# Privileges for `root`@`::1`
+
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'::1' IDENTIFIED BY PASSWORD '*307A4C65727D9C8E666C12361EB011F86F853732' WITH GRANT OPTION;
+
+
+# Privileges for `root`@`localhost`
+
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY PASSWORD '*307A4C65727D9C8E666C12361EB011F86F853732' WITH GRANT OPTION;
+
+GRANT PROXY ON ''@'' TO 'root'@'localhost' WITH GRANT OPTION;
+
+
+# Privileges for `roundcube`@`localhost`
+
+GRANT USAGE ON *.* TO 'roundcube'@'localhost' IDENTIFIED BY PASSWORD '*BCA69371F5652BA85FA80A3AEEA71FE5A88E331B';
+
+GRANT ALL PRIVILEGES ON `roundcube`.* TO 'roundcube'@'localhost';
+
+
+# Privileges for `sec_user`@`localhost`
+
+GRANT USAGE ON *.* TO 'sec_user'@'localhost' IDENTIFIED BY PASSWORD '*65425978B94E06966035B011C059D6BE6FF95517';
+
+GRANT SELECT ON `opheme`.* TO 'sec_user'@'localhost';
+
+GRANT SELECT ON `opheme\_twitter\_follows`.* TO 'sec_user'@'localhost';
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON `secure_login`.* TO 'sec_user'@'localhost';
+
+GRANT SELECT, INSERT ON `opheme_logs`.* TO 'sec_user'@'localhost';

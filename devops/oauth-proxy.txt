@@ -1,0 +1,11 @@
+oauth-proxy setup
+apt-get install python3.1
+apt-get install python-dev
+apt-get install python-pip
+apt-get install twistd
+easy_install oauth-proxy
+
+Run oauth-proxy as daemon
+/usr/local/bin/oauth-proxy --consumer-key BVVhTRJ6sNmO7MbpUPjUg --consumer-secret UaFAlscNsPSRbIISenCxYPkaBh5cX6QrJXJD7VwEJ80 --token 92641823-x4WGWNm5kalcLgVpyN4oUw0miHhZkUFEDhCnoChok --token-secret oxMswsorEF6Wn3kzoZqT9VbiwVMzwuKEfVnVqkxYTI &
+
+

@@ -1,0 +1,113 @@
+#!/bin/bash
+#
+# Loose Cannon job allocation system
+#
+# chkconfig: 2345 80 20
+# description:  Loose Cannon
+
+### BEGIN INIT INFO
+# Provides: loose-cannon
+# Required-Start: $local_fs $network $syslog
+# Required-Stop: $local_fs $syslog
+# Should-Start: $syslog
+# Should-Stop: $network $syslog
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+# Short-Description: Start, stop and restart Loose Cannon
+# Description:       Loose Cannon is a job allocation system written in Bash
+### END INIT INFO
+
+### VARIABLES BEGIN
+CWD=/opt/opheme/loose-cannon/bin
+LOGFILE=/var/log/loose-cannon.log
+#SCRIPT=./while.sh
+SCRIPT=./core.sh
+PIDFILE="/var/run/loose-cannon.pid"
+#STARTCMD="${SCRIPT} &> ${LOGFILE}"
+STARTCMD="${SCRIPT}"
+TIMEOUT=20
+### VARIABLES END
+
+function start() {
+  procstatus
+  RTNCODE=$?
+  if [ ${RTNCODE} -eq 0 ]; then
+    exit 0
+  elif [ ${RTNCODE} -eq 1 ]; then 
+    rm -f ${PIDFILE}
+    echo "Stale pid file ${PIDFILE} removed"
+  fi  
+  echo "Starting process" 
+  ${STARTCMD} &> ${LOGFILE} &
+  PID=$!
+  echo "${PID}" > ${PIDFILE}
+  echo "Process started (pid: $PID)" 
+}
+
+function stop() {
+  procstatus
+  RTNCODE=$?
+  if [ ${RTNCODE} -eq 0 ]; then
+    kill -3 `cat ${PIDFILE}`
+    sleep 5
+    echo -n "Waiting for process (`cat ${PIDFILE}`) to shut down."
+    procstatus > /dev/null
+    i=0
+    RTNCODE=$?
+    while [ ${RTNCODE} -eq 0 -a ${i} -lt ${TIMEOUT} ]; do
+          sleep 2
+          echo -n "."
+          procstatus > /dev/null
+          RTNCODE=$?
+          (( i++ ))
+    done
+    if [ ${i} -eq 20 ]; then
+      echo "Failed to stop process (pid: `cat ${PIDFILE}`)"
+    else
+      echo "Process (`cat ${PIDFILE}`) terminated"
+      rm -f ${PIDFILE}
+    fi
+  elif [ ${RTNCODE} -eq 1 ]; then 
+    rm -f ${PIDFILE}
+    echo "Stale pid file ${PIDFILE} removed"    
+  fi
+}
+
+function procstatus() {
+  # Returns: 0 = running, 1 = not running stale pid file, 2 = not running
+    echo "Current dir `readlink -f ..`"
+  if [ -f ${PIDFILE} ]; then
+    if [ $(ps -fp `cat ${PIDFILE}` > /dev/null; echo $?) -eq 0 ]; then
+      echo "${SCRIPT} is running (pid: `cat ${PIDFILE}`)"
+      return 0
+    else
+      echo "${SCRIPT} is not running. Stale pid file in ${PIDFILE}"
+      return 1
+    fi
+  else
+    echo "${SCRIPT} is not running."
+    return 2
+  fi  
+}
+
+cd ${CWD}
+
+case "$1" in
+    start)
+	    start
+	    ;;
+    stop)
+	    stop
+	    ;;
+    status)
+	    procstatus
+      ;;
+    restart)
+	    stop
+	    sleep 5
+	    start
+	    ;;
+	  *)
+	    echo "USAGE: $0 start|stop|status|restart"
+	    ;;
+esac

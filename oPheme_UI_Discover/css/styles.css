@@ -1,0 +1,93 @@
+html {
+	-webkit-font-smoothing: antialiased;
+}
+
+#_opheme_map { 
+	width: 100%; 
+	height: 100%; 
+	position: relative; 
+}
+
+input[type="submit"] {
+	display: block;
+}
+
+#centre_lat, #centre_lng {
+	display: inline;
+}
+/* MUST HAVE */
+
+#map_canvas {
+	position: absolute;
+	z-index: 0;
+	width: 100%;
+	height: 100%;
+}
+
+#form_div {
+	padding-left: 15px;
+	box-shadow: 2px 2px 15px rgba(0, 0, 0, .5);
+	background: white;
+	left: 70px;
+	position: fixed;
+	z-index: 1;
+	width: 240px;
+}
+
+.input-append .btn {
+border-radius: 0px 4px 4px 0px !important;
+}
+
+#coordinates {
+	margin-right: -35px;
+	position: relative;
+	z-index:2;
+}
+
+#map_url	{
+	margin-right: -37px;
+	position: relative;
+	z-index:2;
+}
+	button.coordinates, button.map_url {
+		position: relative;
+		z-index: 3;
+	}
+	
+	.modal-backdrop {
+		background: -webkit-radial-gradient(center, ellipse cover, rgb(123, 155, 248) 0%, rgb(42, 67, 155) 100%);
+		opacity: 1;
+	}
+	
+	.fade.in {
+		opacity: 1 !important;
+	}
+	
+	#landingModal {
+		background: transparent;
+		box-shadow: none;
+		border: none;
+		text-align: center
+	}
+	
+	#landingModal div.hero-unit {
+		color: white;
+		text-shadow: 1px 1px 0px rgba(0,0,0,.5);
+		text-align: center;
+		background: transparent;
+	}
+	
+	#landingModal div.hero-unit h1 {
+		color: white;
+		font-size: 108px;
+		font-weight: 400;
+		font-family: 'Questrial', sans-serif;
+	}
+	
+	#landingModal div.hero-unit p {
+		font-weight: 400;
+	}
+	
+	#landingModal.modal.fade.in {
+		top: 10% !important;
+	}

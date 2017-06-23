@@ -1,0 +1,34 @@
+/* Mixin */
+/* Implementation */
+#complementary .one {
+  background-color: #00b1f5;
+}
+#complementary .two {
+  background-color: #f54400;
+}
+#complementary .three {
+  background-color: #dc3d00;
+}
+#complementary .four {
+  background-color: #42cbff;
+}
+#complementary .five {
+  background-color: #8fe0ff;
+}
+/* Mixin */
+/* Implementation */
+#subtle .one {
+  background-color: #00b1f5;
+}
+#subtle .two {
+  background-color: #29b2ff;
+}
+#subtle .three {
+  background-color: #5cb7ff;
+}
+#subtle .four {
+  background-color: #009cc2;
+}
+#subtle .five {
+  background-color: #007f8f;
+}

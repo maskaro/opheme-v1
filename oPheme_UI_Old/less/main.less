@@ -1,0 +1,296 @@
+.horizontal(@startColor: #555, @endColor: #333) {
+    background-color: @endColor;
+    background-image: -moz-linear-gradient(left, @startColor, @endColor); // FF 3.6+
+    background-image: -webkit-gradient(linear, 0 0, 100% 0, from(@startColor), to(@endColor)); // Safari 4+, Chrome 2+
+    background-image: -webkit-linear-gradient(left, @startColor, @endColor); // Safari 5.1+, Chrome 10+
+    background-image: -o-linear-gradient(left, @startColor, @endColor); // Opera 11.10
+    background-image: linear-gradient(to right, @startColor, @endColor); // Standard, IE10
+    background-repeat: repeat-x;
+    filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=1)",argb(@startColor),argb(@endColor))); // IE9 and down
+  }
+
+.vertical(@startColor: #555, @endColor: #333) {
+    background-color: mix(@startColor, @endColor, 60%);
+    background-image: -moz-linear-gradient(top, @startColor, @endColor); // FF 3.6+
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@startColor), to(@endColor)); // Safari 4+, Chrome 2+
+    background-image: -webkit-linear-gradient(top, @startColor, @endColor); // Safari 5.1+, Chrome 10+
+    background-image: -o-linear-gradient(top, @startColor, @endColor); // Opera 11.10
+    background-image: linear-gradient(to bottom, @startColor, @endColor); // Standard, IE10
+    background-repeat: repeat-x;
+    filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",argb(@startColor),argb(@endColor))); // IE9 and down
+  }
+
+  .vertical-three-colors(@startColor: #00b3ee, @midColor: #7a43b6, @colorStop: 50%, @endColor: #c3325f) {
+    background-color: mix(@midColor, @endColor, 80%);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(@startColor), color-stop(@colorStop, @midColor), to(@endColor));
+    background-image: -webkit-linear-gradient(@startColor, @midColor @colorStop, @endColor);
+    background-image: -moz-linear-gradient(top, @startColor, @midColor @colorStop, @endColor);
+    background-image: -o-linear-gradient(@startColor, @midColor @colorStop, @endColor);
+    background-image: linear-gradient(@startColor, @midColor @colorStop, @endColor);
+    background-repeat: no-repeat;
+    filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",argb(@startColor),argb(@endColor))); // IE9 and down, gets no color-stop at all for proper fallback
+  }
+
+ .horizontal-three-colors(@startColor: #00b3ee, @midColor: #7a43b6, @colorStop: 50%, @endColor: #c3325f) {
+    background-color: mix(@midColor, @endColor, 80%);
+    background-image: -webkit-gradient(left, linear, 0 0, 0 100%, from(@startColor), color-stop(@colorStop, @midColor), to(@endColor));
+    background-image: -webkit-linear-gradient(left, @startColor, @midColor @colorStop, @endColor);
+    background-image: -moz-linear-gradient(left, @startColor, @midColor @colorStop, @endColor);
+    background-image: -o-linear-gradient(left, @startColor, @midColor @colorStop, @endColor);
+    background-image: linear-gradient(to right, @startColor, @midColor @colorStop, @endColor);
+    background-repeat: no-repeat;
+    filter: e(%("progid:DXImageTransform.Microsoft.gradient(startColorstr='%d', endColorstr='%d', GradientType=0)",argb(@startColor),argb(@endColor))); // IE9 and down, gets no color-stop at all for proper fallback
+  }
+/* from old version */
+html {
+  height: 100%;
+  -webkit-font-smoothing: antialiased;
+}
+
+body { height: 100%; margin: 0; padding: 0 }
+
+#_opheme_map { 
+  width: 100%; 
+  height: 100%; 
+  position: relative; 
+}
+
+/* MUST HAVE */
+#map_canvas {
+  position: absolute;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  top: 48px;
+}
+
+/* end - old version */
+
+/* oPheme Pin v0.1 */
+
+div._opheme_bubbleContainer {
+  background-color: white;
+  font-family: Helvetica;
+  font-size: 16px;
+  width: 365px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #e7e7e7;
+  border-radius: 4px;
+  box-shadow: 1px 1px 4px rgba(0,0,0,.15);
+  margin: 10px 10px 10px 10px;
+}
+
+div._opheme_bubbleContainer div.profilePic, div._opheme_bubbleContainer div.profileContainer {
+  float: left;
+  position: relative;
+}
+
+div._opheme_bubbleContainer div.profilePic img {
+  width: 65px;
+  position: relative;
+  margin-bottom: -10px;
+}
+
+div._opheme_bubbleContainer div.profileContainer {
+  width: 290px;
+  padding: 5px;
+}
+
+div._opheme_bubbleContainer div.profileName {
+  padding-bottom: 5px;
+  border-bottom: 1px solid #e7e7e7;
+}
+
+div._opheme_bubbleContainer div.bubbleMessage {
+  padding-top: 5px;
+  font-size: 12px;
+}
+
+/* end - oPheme Pin v0.1 */
+
+body {
+  .vertical(rgb(0, 184, 255), orange);
+  background-image: url(../img/bg-gradient.png);
+  background-repeat: repeat-x;
+  background-size: contain;
+  -webkit-box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
+  -moz-box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
+  box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
+}
+
+.productSpace {
+	padding: 70px 0 80px;
+	margin-bottom: 0;
+	color: #fff;
+}
+.productBackground {
+	position: relative;
+	padding: 40px 0;
+	color: #fff;
+	text-align: center;
+	text-shadow: 0 1px 3px rgba(0,0,0,.4), 0 0 30px rgba(0,0,0,.075);
+
+  .vertical(rgb(0, 184, 255), orange);
+  background-image: url(../img/bg-gradient.png);
+  background-repeat: repeat-x;
+  background-size: contain;
+  -webkit-box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
+  -moz-box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
+  box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2)
+}
+
+.productBackground .container {
+	position: relative;
+	bottom: -40px;
+	background-repeat: repeat-x;
+	background-size: 200px;
+	background-position: left bottom;
+	background-image: url(../img/horizon.png);
+}
+
+h1.productName {
+	font-size: 180px;
+	line-height: 1;
+	letter-spacing: -2px;
+	font-weight: 100;
+}
+
+.productSpace p {
+	font-size: 40px;
+	font-weight: 200;
+	line-height: 1.25;
+}
+.productBackground p {
+	font-weight: 300;
+	line-height: 1.25;
+	margin-bottom: 30px;
+}
+
+.orange {
+	color: orange;
+	font-weight: 300;
+}
+
+/* Marketing section of Overview
+-------------------------------------------------- */
+
+.marketing {
+  text-align: center;
+  color: #ffffff;
+}
+.marketing h1 {
+  margin: 60px 0 10px;
+  font-size: 60px;
+  font-weight: 200;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+.marketing h2 {
+	margin: 60px 0 50px;
+  font-weight: 200;
+}
+.marketing p {
+  font-size: 16px;
+  line-height: 1.5;
+}
+.marketing .marketing-byline {
+  margin-bottom: 40px;
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 1.25;
+  color: #999;
+}
+.marketing-img {
+  display: block;
+  margin: 0 auto 30px;
+  max-height: 145px;
+}
+
+hr.soften {
+	height: 1px;
+	margin: 70px 0;
+	.horizontal-three-colors(@startColor: rgba(255,255,255,0), @midColor: rgba(255,255,255,.2), @colorStop: 50%, @endColor: rgba(255,255,255,0));
+	border: 0;
+}
+
+.instructions {
+	margin-bottom: 60px;
+}
+
+.footer {
+	text-align: center;
+	padding: 30px 0;
+	border-top: 1px solid #e5e5e5;
+	background-color: #f5f5f5;
+}
+
+#location {
+	display: none;
+	position: absolute;
+	top: 0px;
+	height: 400px;
+}
+
+#navContainer { position: relative; }
+
+.navbar .nav > li > i {
+    float: none;
+    padding: 10px 15px 10px;
+    color: #FFF;
+    text-decoration: none;
+    text-shadow: 0 1px 0 #00B8FF;
+}
+@media (max-width: 979px) {
+  #ophemeBrand { 
+    margin-left: 30px; 
+  }
+  #mainNavToggle {
+    margin-right: 30px;
+  }
+}
+
+#doit { display: block; cursor: pointer; }
+
+#filter { top: -1px; z-index: 1; position: relative; overflow: visible;}
+#filter.collapse { overflow: hidden; }
+#filter.collapse.in { overflow: visible; }
+#filter i { float: right; color: white; margin-right: 10px;top: 4px; position: relative; }
+#filter i:hover { color: #FFA500; }
+
+#filterNav {
+  position: relative;
+  top: 6px;
+}
+
+#filterNav input.btn {
+  position: relative;
+  top: -5px;
+}
+
+#radiusLabel i { left: 5px; }
+
+#filterInput { margin-right: -33px; }
+
+#instructions .modal-header  {
+  .vertical(#00B8FF, #00A6E6);
+  color: #fff;
+}
+
+
+
+#instructions .modal-header .close { color: #fff; }
+#instructions i { text-align: center; display: block; font-size: 13em; }
+
+
+@media (max-width: 979px) and (min-width: 768px) {
+  #filter.collapse.in, #filter.collapse {
+    top: -21px !important;
+  }
+}
+
+@media (max-width: 767px) {
+  #filter.collapse.in, #filter.collapse {
+    top: -29px !important;
+  }
+}

@@ -1,0 +1,52 @@
+LOOSE-CANNON - CORE
+Core process reads jobs file from /etc/jobs.txt. Each job is routed into channel listened by agent process. 
+Data sent to agent process channel must be of format of <job id>!<module id>!<job data>.
+<job id>!<module id>!<job data> = stored in jobs.txt
+
+core.sh -> <job id>!<module id>!<job data> -> agent.sh -> <module data> -> module_agent()
+
+LOOSE-CANNON - MODULES
+Modules are stored under /var/lib/modules. 
+Loose-cannon core will read the contents of the directory at the beginning of every iteration.
+This enables modules to be added/removed/modified at runtime withouth having to restart processes.
+
+A module should have the following file structure:
+- MODULENAMEINCAPITALS/main.sh      - ./main.sh is mandatory and should contain a minimum of 3 functions
+
+The mandatory file MODULENAMEINCAPITALS/main.sh should contain a miminum of 3 functions:
+--  MODULENAMEINCAPITALS_agent      - *_agent function is called by an agent process and it must contain instructions on what agent process should be doing when job is received
+--  MODULENAMEINCAPITALS_test       - *_test function is used for module development and testing and it must call *_agent function
+                                      *_test function implementation should be simple: 
+                                      function MODULENAMEINCAPITALS_test() { MODULENAMEINCAPITALS_agent }
+                                      *_test function must return 0 (ok) or 1 (fail)
+                                      *_test function call is done by providing a parameter test when calling the ./main.sh. Example: /var/lib/modules/MODULENAMEINCAPITALS/main.sh test
+                                    - The body of the main.sh should contain a block to process the parameter which triggers the call to *_test function: 
+                                      if [ "${1}" == "test" ]; then MODULENAMEINCAPITALS_test fi
+                                     
+Prefix all functions within a module with a module name in capitals followed by the underscore (MODULENAME_funkyfunction) to avoid function in module A to clash with a function in module B. 
+                                    
+A module can contain any number of files but it must contain a minimum of 1 file that is main.sh in the root of the module.
+
+An example module called ECHO that checks the system time and converts it into EPOCH time.
+File layout (tree lib/modules/ECHO/):
+lib/modules/ECHO/
+└── main.sh
+
+Contents of main.sh (cat lib/modules/ECHO/main.sh):
+#!/bin/bash
+function ECHO_agent() {
+  echo "epoch time ${1} = \"$(date -d @${1} +%c)\""
+}
+function ECHO_test() {
+  if [ $# -eq 0 ]; then
+    ECHO_agent $(echo "`date +%s`")
+  else
+    ECHO_agent ${1}
+  fi
+}
+if [ "${1}" == "test" ]; then
+  shift
+  ECHO_test ${1}
+fi 
+
+
